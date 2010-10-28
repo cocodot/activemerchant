@@ -74,6 +74,10 @@ module ActiveMerchant #:nodoc:
         super
       end
 
+    def test?
+      options[:gateway_mode] ? (options[:gateway_mode] == :test) : super
+    end
+
       # Performs an authorization, which reserves the funds on the customer's credit card, but does not
       # charge the card.
       #
@@ -107,7 +111,6 @@ module ActiveMerchant #:nodoc:
         add_address(post, options)
         add_customer_data(post, options)
         add_duplicate_window(post)
-
         commit('AUTH_CAPTURE', money, post)
       end
 

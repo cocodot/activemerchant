@@ -38,6 +38,25 @@ module ActiveMerchant #:nodoc:
           raise Error, ERROR_MESSAGE
         end
       end
+      
+      def recurring(money, creditcard, options = {})
+        case creditcard.number
+        when '1'
+          Response.new(true, SUCCESS_MESSAGE, {:paid_amount => money.to_s, :gateway_subscription_id => '1234'}, :test => true)
+        when '2'
+          Response.new(false, FAILURE_MESSAGE, {:paid_amount => money.to_s, :error => FAILURE_MESSAGE },:test => true)
+        else
+          raise Error, ERROR_MESSAGE
+        end
+      end
+      
+      def cancel_recurring(subscription_id)
+        if subscription_id
+          Response.new(true, SUCCESS_MESSAGE, {}, :test => true)
+        else
+          Response.new(false, FAILURE_MESSAGE, {:error => FAILURE_MESSAGE },:test => true)
+        end
+      end
  
       def credit(money, ident, options = {})
         case ident
